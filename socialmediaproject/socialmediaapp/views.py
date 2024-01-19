@@ -3,6 +3,7 @@ from django.contrib.auth.models import User,auth
 from django.contrib import messages
 from .models import Profile
 from django.contrib.auth.decorators import login_required
+from django.db.models.fields.files import ImageFieldFile
 
 # Create your views here.
 @login_required(login_url='loginuser')
@@ -27,11 +28,16 @@ def signup(request):
             else:
                 user=User.objects.create_user(username=username,email=email,password=password)
                 user.save()
+                
+                #login the user and redirect to settings page
+                user_login=auth.authenticate(username=username,password=password)
+                auth.login(request,user_login)
+                #create profile
                 user_obj=User.objects.get(username=username)
                 new_profile=Profile.objects.create(user=user_obj,id_user=user_obj.id)
                 new_profile.save()
-                messages.success(request,'user create successfully')
-                return redirect('signup')
+                
+                return redirect('settinguser')
 
         else:
             messages.info(request,'Password doesnot match')
@@ -52,6 +58,39 @@ def loginuser(request):
             messages.info(request,'invalid credentials')
             return redirect('loginuser')
     return render(request,'signin.html')
+
+def settinguser(request):
+    profileuser=Profile.objects.get(user=request.user)
+    if request.method=="POST":
+      if request.FILES.get('profile_pic') == None:
+          profile_pic=profileuser.profile_pic
+          bio=request.POST['bio']
+          location=request.POST['location']
+          profileuser.profile_pic=profile_pic
+          profileuser.bio=bio
+          profileuser.address=location
+          profileuser.save()
+      if request.FILES.get('profile_pic') is not None:
+          profile_pic=request.FILES.get('profile_pic')
+          bio=request.POST['bio']
+          address=request.POST['location']
+
+          profileuser.profile_pic=profile_pic
+          profileuser.bio=bio
+          profileuser.address=address
+          profileuser.save()
+      else:
+          return redirect('settinguser')
+          
+          
+    return render(request,'setting.html',{'profileuser':profileuser})
+
+
+
+
+
+
+
 
 
 @login_required(login_url='loginuser')
