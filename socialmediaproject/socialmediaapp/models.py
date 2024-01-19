@@ -6,6 +6,9 @@ User=get_user_model()
 class Profile(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     id_user=models.IntegerField()
-    bio=models.TextField()
-    address=models.CharField(max_length=100)
+    bio=models.TextField(blank=True)
+    address=models.CharField(max_length=100,blank=True)
     profile_pic=models.ImageField(upload_to='profile_images',default='faq.png')
+ 
+    def __str__(self):
+        return self.user.username
