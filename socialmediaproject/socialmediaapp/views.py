@@ -5,12 +5,15 @@ from .models import Profile,Post
 from django.contrib.auth.decorators import login_required
 from django.db.models.fields.files import ImageFieldFile
 
+
 # Create your views here.
 @login_required(login_url='loginuser')
 def index(request):
     user_obj=User.objects.get(username=request.user.username)
     profile_obj=Profile.objects.get(user=user_obj)
-    return render (request,'index.html',{'profile_obj':profile_obj})
+    post_obj=Post.objects.all()
+    
+    return render (request,'index.html',{'profile_obj':profile_obj,'post_obj':post_obj})
 
 
 def signup(request):
@@ -63,7 +66,7 @@ def loginuser(request):
 
 def uploadpost(request):
     if request.method=="POST":
-      user=request.user
+      user=request.user.username
       image=request.FILES.get('image_upload')
       caption=request.POST['caption']
       new_post=Post.objects.create(user=user,image=image,caption=caption)
