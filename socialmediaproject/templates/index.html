@@ -71,17 +71,23 @@
                                             <path d="M9 13h2v5a1 1 0 11-2 0v-5z" />
                                         </svg>
                                     </div>
-
-                                    <p class="my-3 leading-6"> Upload pics or videos <br> please upload her ..
+                                    <form action="uploadpost" method="POST" enctype="multipart/form-data">
+                                    {%csrf_token%}
+                                    <p class="my-3 leading-6"> Upload pics
                                     </p>
-                                    <div uk-form-custom>
-                                        <input type="file">
-                                        <a href="#" class="button soft-warning small"> Choose file</a>
+                                    <div>
+                                        <input type="file" name="image_upload" >
+                                        <br>
+                                        <!-- <a href="#" class="button soft-warning small"> Choose file</a> -->
+                                        <textarea  class="button soft-warning small" name="caption" placeholder="caption..."></textarea>
+                                        <br>
+                                        <button class="button bg-blue-700" type="submit">upload</button>
                                     </div>
+                                    </form>
     
-                                    <a href="#" class="uk-text-muted mt-3 uk-link"
+                                    <!-- <a href="#" class="uk-text-muted mt-3 uk-link"
                                         uk-toggle="target: .choose-upload ;  animation: uk-animation-slide-right-small, uk-animation-slide-left-medium; queued: true">
-                                        Or Import Video </a>
+                                        Or Import Video </a> -->
                                 </div>
     
                                 <div class="uk-flex uk-flex-column choose-upload" hidden>
@@ -167,7 +173,7 @@
                         <!-- profile -->
 
                         <a href="#">
-                            <img src="{%static 'assets/images/avatars/avatar-2.jpg' %}" class="header-avatar" alt="">
+                            <img src="{{profile_obj.profile_pic.url}}" class="header-avatar" alt="">
                         </a>
                         <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
                             <ul>

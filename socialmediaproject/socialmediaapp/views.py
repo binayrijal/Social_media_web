@@ -1,14 +1,16 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
-from .models import Profile
+from .models import Profile,Post
 from django.contrib.auth.decorators import login_required
 from django.db.models.fields.files import ImageFieldFile
 
 # Create your views here.
 @login_required(login_url='loginuser')
 def index(request):
-    return render (request,'index.html')
+    user_obj=User.objects.get(username=request.user.username)
+    profile_obj=Profile.objects.get(user=user_obj)
+    return render (request,'index.html',{'profile_obj':profile_obj})
 
 
 def signup(request):
@@ -59,13 +61,26 @@ def loginuser(request):
             return redirect('loginuser')
     return render(request,'signin.html')
 
+def uploadpost(request):
+    if request.method=="POST":
+      user=request.user
+      image=request.FILES.get('image_upload')
+      caption=request.POST['caption']
+      new_post=Post.objects.create(user=user,image=image,caption=caption)
+      new_post.save()
+      return redirect ('/')
+    else:
+        return redirect('/')
+
+
 def settinguser(request):
     profileuser=Profile.objects.get(user=request.user)
     if request.method=="POST":
-      if request.FILES.get('profile_pic') == None:
+      if request.FILES.get('profile_pic') is None:
           profile_pic=profileuser.profile_pic
           bio=request.POST['bio']
           location=request.POST['location']
+          print(bio,location)
           profileuser.profile_pic=profile_pic
           profileuser.bio=bio
           profileuser.address=location
