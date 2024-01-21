@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
-from .models import Profile,Post
+from .models import Profile,Post,Like
 from django.contrib.auth.decorators import login_required
 from django.db.models.fields.files import ImageFieldFile
 
@@ -14,6 +14,28 @@ def index(request):
     post_obj=Post.objects.all()
     
     return render (request,'index.html',{'profile_obj':profile_obj,'post_obj':post_obj})
+
+
+def likepost(request):
+    username=request.user.username
+    id=request.GET.get('post_id')
+    post=Post.objects.get(id=id)
+    like_user=Like.objects.filter(post_id=id,username=username).first()
+    
+    if like_user is None:
+        like_post=Like.objects.create(post_id=id,username=username)
+        like_post.save()
+        post.no_of_likes=post.no_of_likes+1
+        post.save()
+        return redirect('/')
+
+    else:
+        like_user.delete()
+        post.no_of_likes=post.no_of_likes-1
+        post.save()
+        return redirect('/')
+
+
 
 
 def signup(request):
