@@ -36,7 +36,20 @@ def likepost(request):
         return redirect('/')
 
 
+def profileuser(request,pk):
+    user_obj=User.objects.get(username=pk)
+    user_profile=Profile.objects.get(user=user_obj)
+    user_posts=Post.objects.filter(user=pk)
+    length_post=len(user_posts)
+    data={
+        'user_obj':user_obj,
+        'user_profile':user_profile,
+        'user_posts':user_posts,
+        'length_post':length_post,
+    }
 
+    return render(request,'profile.html',data)
+    
 
 def signup(request):
     if request.method=="POST":
