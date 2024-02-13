@@ -54,6 +54,8 @@ def follower(request):
    
             return redirect ('profileuser/'+ user)
         
+    
+        
 
 
 
@@ -62,11 +64,28 @@ def profileuser(request,pk):
     user_profile=Profile.objects.get(user=user_obj)
     user_posts=Post.objects.filter(user=pk)
     length_post=len(user_posts)
+
+    user=pk
+    follower= request.user.username
+    
+    if FollowerCount.objects.filter(follower=follower, user=user).first():
+        button_text = 'Unfollow'
+
+    else:
+        button_text = 'Follow'
+
+    followers=len(FollowerCount.objects.filter(user=pk))
+    following=len(FollowerCount.objects.filter(follower=pk))
+
+
     data={
-        'user_obj':user_obj,
-        'user_profile':user_profile,
-        'user_posts':user_posts,
-        'length_post':length_post,
+         'user_obj':user_obj,
+         'user_profile':user_profile,
+         'user_posts':user_posts,
+         'length_post':length_post,
+         'followers':followers,
+         'following': following,
+         'button_text': button_text,
     }
 
     return render(request,'profile.html',data)
