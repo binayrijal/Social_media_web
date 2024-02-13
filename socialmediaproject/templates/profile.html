@@ -29,7 +29,7 @@
 				<figure><img src="{% static 'images/resources/timeline-1.jpg' %}" alt=""></figure>
 				<form>
 					<div class="add-btn">
-					<span style="color: white; font-size: 27px; margin-right: 520px;"><b><u><a href="/">Home</a></u></b></span>
+					<span style="color: white; font-size: 27px; margin-right: 500px;"><b><u><a href="/">Home</a></u></b></span>
 					{%if length_post %}
 					<span style="color: white; font-size: 27px;"><b>{{length_post}} posts</b></span>
 					{%else%}
@@ -120,13 +120,23 @@
 
 							<div class="col-lg-6">
 								<div class="central-meta">
+									<b>Post by {{user_profile.user.username}}</b><br><hr>
 									<ul class="photos">
+										{%if user_posts%}
 					                    {%for post in user_posts%}
 										<li>
 											<a class="strip" href="{{post.image.url}}" title="" data-strip-group="mygroup" data-strip-group-options="loop: false">
 												<img src="{{post.image.url}}" style="height: 250px; width: 300px;" alt=""></a>
 										</li>
+										
 										{%endfor%}
+										{%else%}
+										<li>
+											<a class="strip" href="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" title="" data-strip-group="mygroup" data-strip-group-options="loop: false">
+												<img src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" style="height: 250px; width: 300px;" alt=""></a>
+										</li>
+										{%endif%}
+
 
 										<!-- <li>
 											<a class="strip" href="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" title="" data-strip-group="mygroup" data-strip-group-options="loop: false">

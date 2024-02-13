@@ -143,7 +143,8 @@ def settinguser(request):
 
 
 
-
+def follower(request):
+    pass
 
 
 @login_required(login_url='loginuser')

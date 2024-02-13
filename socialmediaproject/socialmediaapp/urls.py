@@ -8,6 +8,7 @@ urlpatterns = [
    path('loginuser',views.loginuser,name='loginuser'),
    path('settinguser',views.settinguser,name='settinguser'),
    path('likepost',views.likepost,name='likepost'),
+   path('follower',views.follower,name='follower'),
    path('profileuser/<str:pk>',views.profileuser,name='profileuser'),
    path('uploadpost',views.uploadpost,name='uploadpost'),
    path('logoutuser',views.logoutuser,name='logoutuser'),

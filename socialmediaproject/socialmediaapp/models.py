@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from django.db import models
 from django.contrib.auth import get_user_model
 import uuid
@@ -38,3 +39,10 @@ class Like(models.Model):
     def __str__(self):
         return self.username
     
+
+class FollowerCount(models.Model):
+    follower=models.CharField(max_length=100)
+    user=models.CharField(max_length=100)
+
+    def __str__(self) :
+        return self.user
