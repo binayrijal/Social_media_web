@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
-from .models import Profile,Post,Like
+from .models import Profile,Post,Like,FollowerCount
 from django.contrib.auth.decorators import login_required
 from django.db.models.fields.files import ImageFieldFile
 
@@ -34,6 +34,27 @@ def likepost(request):
         post.no_of_likes=post.no_of_likes-1
         post.save()
         return redirect('/')
+
+
+
+# here follower is current user and user is who is  followed by follower
+    
+def follower(request):
+    if request.method == 'POST':
+        user=request.POST['user']
+        follower=request.POST['followers']
+
+        if FollowerCount.objects.filter(follower=follower, user=user).first():
+            delfollower =FollowerCount.objects.get(follower=follower, user=user)
+            delfollower.delete()
+            return redirect ('index')
+        else:
+            new_follower=FollowerCount.objects.create(follower=follower, user=user)
+            new_follower.save()
+   
+            return redirect ('profileuser/'+ user)
+        
+
 
 
 def profileuser(request,pk):
@@ -143,8 +164,6 @@ def settinguser(request):
 
 
 
-def follower(request):
-    pass
 
 
 @login_required(login_url='loginuser')
