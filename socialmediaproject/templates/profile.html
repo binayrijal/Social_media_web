@@ -41,7 +41,7 @@
 					<input type="hidden" value="{{user.username}}" name="followers">
 					<input type="hidden" value="{{user_obj.username}}" name="user">
 					{% if user_obj.username == user.username%}
-					<a href="{% url 'settinguser' %}" title="" data-ripple=""><button   style="background-color: #ffc0cb; border: #ffc0cb;">Account Settings</button></a>
+					<a href="{% url 'settinguser' %}" title="" data-ripple="">Account Settings</a>
 					{% else%}
 					<a href="" title="" data-ripple=""><button type="submit"  style="background-color: #ffc0cb; border: #ffc0cb;">{{button_text}}</button></a>
 					{%endif%}

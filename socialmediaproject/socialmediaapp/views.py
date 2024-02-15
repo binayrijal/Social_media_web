@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import Profile,Post,Like,FollowerCount
 from django.contrib.auth.decorators import login_required
 from django.db.models.fields.files import ImageFieldFile
+from itertools import chain
 
 
 # Create your views here.
@@ -12,8 +13,23 @@ def index(request):
     user_obj=User.objects.get(username=request.user.username)
     profile_obj=Profile.objects.get(user=user_obj)
     post_obj=Post.objects.all()
+
+    user_following_list=[]
+    feed_lists=[]
+
+    user_following=FollowerCount.objects.filter(follower=request.user.username)
     
-    return render (request,'index.html',{'profile_obj':profile_obj,'post_obj':post_obj})
+    for following in user_following:
+        user_following_list.append(following.user)
+
+    for users in user_following_list:
+        feed=Post.objects.filter(user=users)
+        feed_lists.append(feed)
+
+    feeds=list(chain(*feed_lists))
+
+    
+    return render (request,'index.html',{'profile_obj':profile_obj, 'feeds':feeds})
 
 
 def likepost(request):
