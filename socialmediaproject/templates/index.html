@@ -177,8 +177,8 @@
                         </a>
                         <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
                             <ul>
-                                <li><a href="setting.html"> Account setting </a> </li>
-                                <li><a href="explore.html">explore </a> </li>
+                                <li><a href="{% url 'settinguser' %}"> Account setting </a> </li>
+                                <li><a href="#">explore </a> </li>
                                 <li><a href="#"> Help </a> </li>
                                 <li><a href="{% url 'logoutuser'%}"> Log Out</a></li>
                             </ul>
@@ -208,7 +208,7 @@
                                             <img src="{% static 'assets/images/post/img4 (2).jpg' %}" class="bg-gray-200 border border-white rounded-full w-8 h-8">
                                         </div>
                                     </a>
-                                    <span class="block capitalize font-semibold "><a href="{%url 'settinguser' %}">{{post.user}}</a>  </span>
+                                    <span class="block capitalize font-semibold "><a href="{%url 'profileuser' '{{post.user}}' %}">{{post.user}}</a>  </span>
                                 </div>
                               <div>
                                 <a href="#"> <i class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 "></i> </a>
